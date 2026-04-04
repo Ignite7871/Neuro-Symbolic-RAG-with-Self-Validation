@@ -17,26 +17,18 @@ A hybrid AI system that combines Retrieval-Augmented Generation (RAG), Knowledge
 
 ## Architecture
 User Query
-↓
+     ↓
 Memory
-↓
+     ↓
 Vector Retrieval
-↓
+     ↓
 Knowledge Graph
-↓
+     ↓
 Hybrid Context
-↓
+     ↓
 LLM
-↓
+     ↓
 Validator
-↓
+     ↓
 Final Answer + Confidence
 
-## Tech Stack
-
-Python
-FastAPI
-FAISS
-Sentence Transformers
-Ollama (Mistral LLM)
-Regex-based Knowledge Graph Extraction
