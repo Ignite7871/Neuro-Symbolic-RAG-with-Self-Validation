@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+core/
+pipelines/
+notbooks/
+
+# Virtual env
+venv/
+rag_project_env/
+
+# Data (optional)
+data/processed/
+data/raw/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Env variables
+.env
