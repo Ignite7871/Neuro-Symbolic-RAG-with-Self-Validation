@@ -397,7 +397,6 @@ Potential extensions include:
 * configurable embedding and LLM backends
 * persistent episodic memory
 * Dockerized deployment
-* automated CI testing
 * latency and retrieval-quality benchmarking
 
 ---
