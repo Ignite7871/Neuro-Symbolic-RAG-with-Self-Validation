@@ -1,4 +1,5 @@
 # Neuro-Symbolic Memory-Augmented RAG System
+[![Tests](https://github.com/Ignite7871/Neuro-Symbolic-RAG-with-Self-Validation/actions/workflows/tests.yml/badge.svg)](https://github.com/Ignite7871/Neuro-Symbolic-RAG-with-Self-Validation/actions/workflows/tests.yml)
 
 A modular Retrieval-Augmented Generation (RAG) system that combines **semantic retrieval, knowledge-graph reasoning, episodic memory, and response validation** to provide context-aware and more explainable answers.
 
