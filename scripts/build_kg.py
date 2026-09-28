@@ -1,11 +1,14 @@
 import os
 from backend.reasoning.kg_builder import KGBuilder
 from backend.retrieval.graph_store import GraphStore
-
-DATA_PATH = "data/raw"
+from backend.config import DATA_PATH
 
 def load_documents():
     docs = []
+
+    if not os.path.isdir(DATA_PATH):
+        print(f"No such directory: '{DATA_PATH}'")
+        return docs
 
     for file in os.listdir(DATA_PATH):
         if file.endswith(".txt"):

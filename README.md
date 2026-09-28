@@ -200,23 +200,24 @@ Its purpose is to demonstrate how generated responses can be checked against str
 Neuro-Symbolic-RAG-with-Self-Validation/
 │
 ├── backend/
-│   ├── core/
 │   ├── llm/
 │   ├── memory/
 │   ├── reasoning/
 │   ├── retrieval/
+│   ├── routes/
+│   ├── config.py
 │   └── main.py
-│
-├── notebooks/
-│   └── experimental notebooks
 │
 ├── scripts/
 │   └── data / pipeline utilities
 │
-├── test_query.py
-├── test_hybrid.py
-├── test_llm_pipeline.py
-├── test_memory.py
+├── data/
+│   └── raw/           # source .txt documents (sample_ai.txt ships as a seed)
+│
+├── tests/
+│   └── pytest test suite
+│
+├── requirements.txt
 └── README.md
 ```
 
@@ -311,22 +312,59 @@ The exact confidence value depends on the graph contents and generated response.
 
 ## 🧪 Testing
 
-The repository contains tests covering the major pipeline components:
+The repository contains a `tests/` pytest suite covering the major pipeline components:
 
 ```text
-test_query.py
-test_hybrid.py
-test_llm_pipeline.py
-test_memory.py
+tests/test_vector_store.py
+tests/test_hybrid.py
+tests/test_llm_pipeline.py
+tests/test_memory.py
 ```
 
-These scripts exercise:
+These cover:
 
-* vector retrieval
-* hybrid retrieval
-* memory
-* LLM pipeline integration
+* vector store chunking and retrieval
+* hybrid retrieval (memory + vector + graph)
+* episodic memory
 * response validation
+* LLM error handling when Ollama is unreachable
+
+Run them with:
+
+```bash
+pytest
+```
+
+---
+
+## ⚙️ Getting Started
+
+```bash
+# 1. Install dependencies
+pip install -r requirements.txt
+
+# 2. Download the NLTK sentence tokenizer (used for chunking)
+python -m nltk.downloader punkt
+
+# 3. Build the FAISS vector store from data/raw/*.txt
+#    (a sample document ships in the repo so this works immediately;
+#    run as a module so `backend` is importable)
+python -m scripts.ingest_data
+
+# 4. Start Ollama separately and pull the model referenced below, then run the API
+uvicorn backend.main:app --reload
+```
+
+The service listens on `http://localhost:8000` by default; send queries to `POST /query`.
+
+Configuration can be overridden via environment variables (see `backend/config.py`):
+
+| Variable            | Default                                     | Purpose                              |
+| ------------------- | -------------------------------------------- | ------------------------------------- |
+| `DATA_PATH`          | `data/raw`                                   | Source `.txt` documents for the KG    |
+| `VECTOR_STORE_PATH`  | `data/processed/vector_store`                | Saved FAISS index location            |
+| `OLLAMA_URL`         | `http://localhost:11434/api/generate`        | Ollama generate endpoint              |
+| `OLLAMA_MODEL`       | `mistral`                                    | Model name passed to Ollama           |
 
 ---
 

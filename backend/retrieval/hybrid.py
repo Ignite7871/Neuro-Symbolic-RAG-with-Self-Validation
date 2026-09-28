@@ -18,13 +18,13 @@ class HybridRetriever:
     def retrieve(self, query, top_k=3):
         print("\n[Hybrid Retrieval + Memory]")
 
-        # 1️⃣ Memory search
+        # Memory search
         memory_results = self.memory.search(query)
 
-        # 2️⃣ Vector search
+        # Vector search
         vector_results = self.vector_store.query(query, top_k=top_k)
 
-        # 3️⃣ Graph search
+        # Graph search
         entity = self.extract_entity(query)
         print(f"Extracted Entity for KG: {entity}")
 

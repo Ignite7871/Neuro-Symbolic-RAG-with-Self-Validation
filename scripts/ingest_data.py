@@ -1,10 +1,13 @@
 import os
 from backend.retrieval.vector_store import VectorStore
-
-DATA_PATH = "data/raw"
+from backend.config import DATA_PATH
 
 def load_documents():
     documents = []
+
+    if not os.path.isdir(DATA_PATH):
+        print(f"No such directory: '{DATA_PATH}'")
+        return documents
 
     for file in os.listdir(DATA_PATH):
         file_path = os.path.join(DATA_PATH, file)

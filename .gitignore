@@ -3,18 +3,17 @@ __pycache__/
 *.pyc
 *.pyo
 *.pyd
-
-core/
-pipelines/
-notbooks/
+.pytest_cache/
 
 # Virtual env
 venv/
+.venv/
 rag_project_env/
 
-# Data (optional)
+# Data (keep one seed document so the repo is runnable after a fresh clone)
 data/processed/
-data/raw/
+data/raw/*
+!data/raw/sample_ai.txt
 
 # OS files
 .DS_Store

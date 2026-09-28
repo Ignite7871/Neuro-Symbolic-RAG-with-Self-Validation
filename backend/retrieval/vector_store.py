@@ -6,6 +6,8 @@ import pickle
 import nltk
 from nltk.tokenize import sent_tokenize
 
+from backend.config import VECTOR_STORE_PATH
+
 class VectorStore:
     def __init__(self, model_name="all-MiniLM-L6-v2"):
         print("Loading embedding model...")
@@ -18,24 +20,22 @@ class VectorStore:
 
         chunks = []
         current_chunk = []
-
         current_length = 0
 
         for sentence in sentences:
             sentence_length = len(sentence)
 
-            if current_length + sentence_length > chunk_size:
+            if current_chunk and current_length + sentence_length > chunk_size:
                 chunks.append(" ".join(current_chunk))
-
-            # overlap (keep last sentence)
-            current_chunk = current_chunk[-overlap:] if overlap > 0 else []
-            current_length = sum(len(s) for s in current_chunk)
+                # overlap (keep last sentence(s) for continuity)
+                current_chunk = current_chunk[-overlap:] if overlap > 0 else []
+                current_length = sum(len(s) for s in current_chunk)
 
             current_chunk.append(sentence)
             current_length += sentence_length
 
-            if current_chunk:
-                chunks.append(" ".join(current_chunk))
+        if current_chunk:
+            chunks.append(" ".join(current_chunk))
 
         return chunks
 
@@ -63,7 +63,7 @@ class VectorStore:
 
         print("Index built successfully!")
 
-    def save(self, path="data/processed/vector_store"):
+    def save(self, path=VECTOR_STORE_PATH):
         os.makedirs(path, exist_ok=True)
 
         faiss.write_index(self.index, f"{path}/index.faiss")
@@ -73,7 +73,7 @@ class VectorStore:
 
         print("Vector store saved!")
 
-    def load(self, path="data/processed/vector_store"):
+    def load(self, path=VECTOR_STORE_PATH):
         print("Loading index...")
         self.index = faiss.read_index(f"{path}/index.faiss")
 

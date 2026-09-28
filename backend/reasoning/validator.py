@@ -18,14 +18,14 @@ class Validator:
 
         stop_words = {"ai", "is", "in", "and", "used", "the", "of"}
 
-        # ✅ check valid facts
+        # check valid facts
         for (subj, rel, obj) in graph:
             obj_lower = obj.lower()
 
             if obj_lower in response.lower() and len(obj_lower) > 2:
                 valid.append(obj)
 
-        # ✅ check invalid claims
+        # check invalid claims
         for word in response_entities:
             match = any(word in obj.lower() for (_, _, obj) in graph)
 

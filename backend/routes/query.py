@@ -9,17 +9,18 @@ from backend.reasoning.kg_builder import KGBuilder
 from backend.llm.model import LLM
 from backend.llm.prompt import build_prompt
 from backend.reasoning.validator import Validator
+from backend.config import DATA_PATH
 
 import os
 
 router = APIRouter()
 
-# 🧠 Request Schema
+# Request schema
 class QueryRequest(BaseModel):
     query: str
 
 
-# 🔥 Initialize system (LOAD ONCE)
+# Initialize system (load once, at import time)
 memory = EpisodicMemory()
 vs = VectorStore()
 vs.load()
@@ -27,7 +28,7 @@ vs.load()
 kg_builder = KGBuilder()
 graph = GraphStore()
 
-DATA_PATH = "data/raw"
+os.makedirs(DATA_PATH, exist_ok=True)
 
 for file in os.listdir(DATA_PATH):
     if file.endswith(".txt"):
@@ -36,12 +37,16 @@ for file in os.listdir(DATA_PATH):
             triples = kg_builder.extract_triples(text)
             graph.add_triples(triples)
 
+if not graph.get_all():
+    print(f"Warning: no knowledge graph triples loaded from '{DATA_PATH}'. "
+          f"Add .txt documents there and rerun scripts/ingest_data.py.")
+
 hybrid = HybridRetriever(vs, graph, memory)
 llm = LLM()
 validator = Validator(graph)
 
 
-# 🚀 API Endpoint
+# API endpoint
 @router.post("/query")
 def query_system(request: QueryRequest):
     query = request.query

@@ -1,0 +1,5 @@
+AI is a subset of Computer Science.
+Machine Learning is a subset of AI.
+Deep Learning is a subset of Machine Learning.
+AI is used in healthcare, finance, and robotics.
+Python is a popular programming language for AI development.
