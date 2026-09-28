@@ -301,7 +301,7 @@ Example response:
 {
   "query": "Where is AI used?",
   "answer": "AI is used in healthcare, finance, and robotics.",
-  "confidence": 0.8,
+  "confidence": 1.0,
   "invalid_claims": []
 }
 ```
@@ -312,28 +312,25 @@ The exact confidence value depends on the graph contents and generated response.
 
 ## 🧪 Testing
 
-The repository contains a `tests/` pytest suite covering the major pipeline components:
+The project uses `pytest` for automated testing.
 
-```text
-tests/test_vector_store.py
-tests/test_hybrid.py
-tests/test_llm_pipeline.py
-tests/test_memory.py
-```
+The test suite covers:
 
-These cover:
-
-* vector store chunking and retrieval
-* hybrid retrieval (memory + vector + graph)
+* vector-store chunking and retrieval
+* graph-store operations
+* hybrid retrieval
 * episodic memory
 * response validation
-* LLM error handling when Ollama is unreachable
+* prompt construction
+* LLM connection error handling
 
-Run them with:
+Run locally with:
 
 ```bash
-pytest
+pytest -v
 ```
+
+GitHub Actions automatically runs the test suite on pushes and pull requests.
 
 ---
 
@@ -344,7 +341,7 @@ pytest
 pip install -r requirements.txt
 
 # 2. Download the NLTK sentence tokenizer (used for chunking)
-python -m nltk.downloader punkt
+python -m nltk.downloader punkt punkt_tab
 
 # 3. Build the FAISS vector store from data/raw/*.txt
 #    (a sample document ships in the repo so this works immediately;
